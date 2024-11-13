@@ -4,30 +4,36 @@ import createContextApi from "./lib/query/createContextApi"
 const quizContext = createContextApi({
                     slicename:'quiz', 
                     endpoints: (queries) => ({
-                                  createQuiz: queries.post({
-                                      query: ()=> '/products'
-                                  }),
+                                //   createQuiz: queries.post({
+                                //       query: ()=> '/products'
+                                //   }),
                                   readQuiz: queries.get({
                                       query: (id)=> `/quiz/${id}`
                                   }),
-                                  readQuizs: queries.get({
-                                      query: ()=> '/products'
-                                  }),
-                                  updateQuizs: queries.put({
-                                      query: (id)=> `/quiz/${id}`
-                                  }),
-                                  updateQuiz: queries.patch({
-                                      query: (id)=> `/quiz/${id}`
-                                  }),
-                                  deleteQuiz: queries.delete({
-                                      query: (id)=> `/quiz/${id}`
-                                  })
+                                //   readQuizs: queries.get({
+                                //       query: ()=> '/products'
+                                //   }),
+                                //   updateQuizs: queries.put({
+                                //       query: (id)=> `/quiz/${id}`
+                                //   }),
+                                //   updateQuiz: queries.patch({
+                                //       query: (id)=> `/quiz/${id}`
+                                //   }),
+                                //   deleteQuiz: queries.delete({
+                                //       query: (id)=> `/quiz/${id}`
+                                //   })
                                 })
                               })
 export const { 
     QuizProvider, 
     useQuizData, 
-    useQuizDispatch 
+    useQuizDispatch,
+    // useCreateQuiz,
+    // useReadQuiz,
+    // useReadQuizs,
+    // useUpdateQuizs,
+    // useUpdateQuiz,
+    // useDeleteQuiz,
   } = quizContext
 
 

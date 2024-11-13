@@ -3,12 +3,12 @@ import queries from './queries';
         
 
 export default function createContextApi({ slicename, endpoints , baseQuery = ''}) {
+    
     const DataContext = createContext(null);
     const DispatchContext = createContext(null);
-    
 
     const initialData = { 
-                          [slicename]: {
+                          [slicename]:{
                                           isLoading: false,
                                           isError: false,
                                           data: [],
@@ -66,7 +66,7 @@ export default function createContextApi({ slicename, endpoints , baseQuery = ''
   //   return acc;
   // }, {});
 
-  // console.log(endpoints(queries))
+  // console.log(queries)
   // console.log(endpoints(queries(baseQuery)))
   // console.log(queries)
   
@@ -95,24 +95,56 @@ export default function createContextApi({ slicename, endpoints , baseQuery = ''
     function useDispatch() {
       return useContext(DispatchContext);
     }
-  //   const hooks = Object.keys(endpoints(queries({baseQuery, useData, useDispatch}))).reduce((acc, key) => {
-  //     acc['use' + key.charAt(0).toUpperCase() + key.slice(1)] = ()=> endpoints(queries({baseQuery, useData, useDispatch}))[key](key)
+
+
+    const hooks = Object.keys(endpoints(queries)).reduce((acc, key )=>{
+      const hookName = 'use' + key.charAt(0).toUpperCase() + key.slice(1);
+      acc[hookName] =(params)=> endpoints(queries)[key]({ fnName: hookName,  params, baseQuery, useData, useDispatch })
+      return acc
+    }, {})
+
+    // console.log(hooks)
+    
+    // const hooks = Object.keys(endpointFunctions).reduce((acc, key) => {
+    //   console.log(acc)
+    //   console.log(key)
+    //   // Dynamically generate the hook name
+    //   // const hookName = 'use' + key.charAt(0).toUpperCase() + key.slice(1);
+    
+    //   // // Create a hook function, passing `hookName` as an argument to the endpoint function
+    //   // acc[hookName] = () => endpointFunctions[key]({ hookName });
+    
+    //   // return acc;
+    // }, {});
+
+    // console.log(hooks)
+
+
+
+  //   const hooks = Object.keys(endpoints(queries)).reduce((acc, key) => {
+  //     acc['use' + key.charAt(0).toUpperCase() + key.slice(1)] = ()=> endpoints(queries({ fnName:[acc['use' + key.charAt(0).toUpperCase() + key.slice(1)]], baseQuery, useData, useDispatch}))[key](key)
   //     return acc;
   //   }, {});
   // console.log(hooks)
-  const endpointFunctions = endpoints(queries({ baseQuery, useData, useDispatch }));
 
-  const hooks = Object.keys(endpointFunctions).reduce((acc, key) => {
-    // Generate hook name based on the key
-    const hookName = 'use' + key.charAt(0).toUpperCase() + key.slice(1);
-    
-    // Create a hook that calls the endpoint function with any provided arguments
-    acc[hookName] = (...args) => endpointFunctions[key](...args);
-    
-    return acc;
-  }, {});
 
-  console.log(hooks)
+
+  // const endpointFunctions = endpoints(queries({fnName: , baseQuery, useData, useDispatch }));
+
+  // const hooks = Object.keys(endpointFunctions).reduce((acc, key) => {
+  //   // Generate hook name based on the key
+  //   const hookName = 'use' + key.charAt(0).toUpperCase() + key.slice(1);
     
-    return { [(slicename.replace(/^./, slicename[0].toUpperCase()))+'Provider']: Provider, ['use'+(slicename.replace(/^./,slicename[0].toUpperCase()))+'Data']: useData, ['use'+(slicename.replace(/^./, slicename[0].toUpperCase()))+'dispatch']: useDispatch }
+  //   // Create a hook that calls the endpoint function with any provided arguments
+  //   acc[hookName] = (...args) => endpointFunctions[key](...args);
+    
+  //   return acc;
+  // }, {});
+
+  // console.log(hooks)
+    
+    return { [(slicename.replace(/^./, slicename[0].toUpperCase()))+'Provider']: Provider, ['use'+(slicename.replace(/^./,slicename[0].toUpperCase()))+'Data']: useData, ['use'+(slicename.replace(/^./, slicename[0].toUpperCase()))+'dispatch']: useDispatch,  
+      ...hooks 
+      //  ...endpointFunctions
+    }
 }

@@ -4,13 +4,19 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import { useQuizData } from '../context/quiz'
 import { useTaskData } from '../context/task'
+import { useReadTask } from '../context/task'
 
 function App() {
   const [count, setCount] = useState(0)
-  const data = useQuizData()
-  const task = useTaskData()
-  console.log(data)
+  const task  = useReadTask(1)
   console.log(task)
+  // const tasks  = useReadTask()
+
+
+  // console.log(task)
+  // console.log(tasks)
+
+
 
 
 
